@@ -21,11 +21,11 @@ class Rectangle{
                 newPosition.y= newPosition.y +1;
             }
             else if(num===3){
-                    newPosition.dir = 'east';                  
+                newPosition.dir = 'east';                  
                             
             }
             else{
-                    newPosition.dir = 'west';                    
+                newPosition.dir = 'west';                   
                 
             }           
         }
@@ -115,10 +115,24 @@ function moveObjectInsideContainer() {
     process.stdin.on('data', function(data){
         arr.push(parseInt(data.toString().trim()));
         if(arr.length>0 && arr.length<=4){
-            if(arr[0]<0 || arr[1]<0 || arr[2]<arr[1] || arr[3]< arr[0]){
-                process.stdout.write(`\n\n\n The object is out off the table! ` );
+            if(isNaN(arr[arr.length-1])){
+                process.stdout.write(`\n\n\n Please Enter positive number ! ` );
+                if(arr.length===1)
+                    arr = [];
+                else
+                    arr.splice(arr.length-1,1);
+            }
+            else if(arr[0]<0 || arr[1]<0 || arr[2]<arr[1] || arr[3]< arr[0]){              
+                process.stdout.write(`\n\n\n The object is out off the table! ` );   
                 process.exit();
-            }             
+            }
+            else if(arr[2]===0 || arr[3]===0){
+                process.stdout.write(`\n\n\n Please Enter positive number ! ` );
+                if(arr.length===1)
+                    arr = [];
+                else
+                    arr.splice(arr.length-1,1);
+            }            
         }        
         if(arr.length< questions.length-1){
             getDimensions(arr.length);
@@ -137,23 +151,20 @@ function moveObjectInsideContainer() {
                 }
                 else if(arr[arr.length-1]<=4 ||arr[arr.length-1]>0){
                     if(arr.length===5){
-                        positionX=parseInt(arr[0]);
-                        positionY=parseInt(arr[1]);
-                        height=parseInt(arr[2]);
-                        width=parseInt(arr[3]);
-                        console.log(positionX);
-                        console.log(positionY);
+                        positionX= arr[0];
+                        positionY= arr[1];
+                        height= arr[2];
+                        width= arr[3];                        
                         rectangle = new Rectangle(positionX,positionY,width,height);
                     }
                     else if(arr.length>5)             
                     rectangle = new Rectangle(positionX,positionY,width,height, newDirection); 
-                    console.log(arr[arr.length-1])
                     let newPosition = rectangle.getNewPosition(parseInt(arr[arr.length-1]));
                     positionX= newPosition.x;
                     positionY=newPosition.y;
                     newDirection= newPosition.dir;
-                    console.log(newDirection);
-                    console.log(newPosition.x,newPosition.y);  
+                    console.log('Direction: '+ newDirection);
+                    console.log('Position of the object: ['+ newPosition.x,newPosition.y + ']');  
                     getDimensions(questions.length-1);      
                 }
             }                
