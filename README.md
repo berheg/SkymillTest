@@ -1,0 +1,2 @@
+# SkymillTest
+Solution for assignment
